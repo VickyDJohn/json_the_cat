@@ -3,7 +3,7 @@ const request = require('request');
 // API endpoint URL
 const apiUrl = 'https://api.thecatapi.com/v1/breeds/search';
 
-const fetchBreedDescription = (breedName, callback) => {
+exports.fetchBreedDescription = (breedName, callback) => {
   const url = `${apiUrl}?q=${breedName}`;
 
   request(url, (error, response, body) => {
@@ -21,5 +21,3 @@ const fetchBreedDescription = (breedName, callback) => {
     }
   });
 };
-
-module.exports = { fetchBreedDescription };
