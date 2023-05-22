@@ -3,31 +3,23 @@ const request = require('request');
 // API endpoint URL
 const apiUrl = 'https://api.thecatapi.com/v1/breeds/search';
 
-// Function to fetch breed data from API
-const breedFetcher = (breedName) => {
+const fetchBreedDescription = (breedName, callback) => {
   const url = `${apiUrl}?q=${breedName}`;
 
   request(url, (error, response, body) => {
     if (error) {
-      console.log('Request failed');
+      callback(error, null);
     } else if (response.statusCode !== 200) {
-      console.log(`Request failed with status code: ${response.statusCode}`);
+      callback(`Request failed with status code: ${response.statusCode}`, null);
     } else {
       const data = JSON.parse(body);
-      //if there is no data, return breed not found
       if (data.length > 0) {
-        console.log(data[0].description);
+        callback(null, data[0].description);
       } else {
-        console.log("Breed not found");
+        callback('Breed not found', null);
       }
     }
   });
 };
 
-//use process.argv to take in beed name as command line argument
-const args = process.argv.slice(2);
-if (args.length === 0) {
-  console.log("Please provide a breed name");
-} else {
-  breedFetcher(args[0]);
-}
+module.exports = { fetchBreedDescription };
